@@ -1,1 +1,9 @@
-RlJPTSBnaGNyLmlvL3h0bHMveHJheS1jb3JlOmxhdGVzdCBBUyB4cmF5CkZST00gYWxwaW5lOjMuMjEKUlVOIGFwayBhZGQgLS1uby1jYWNoZSBjYS1jZXJ0aWZpY2F0ZXMKQ09QWSAtLWZyb209eHJheSAvdXNyL2xvY2FsL2Jpbi94cmF5IC91c3IvbG9jYWwvYmluL3hyYXkKQ09QWSBjb25maWcuanNvbi50ZW1wbGF0ZSAvZXRjL3hyYXkvY29uZmlnLmpzb24udGVtcGxhdGUKQ09QWSBlbnRyeXBvaW50LnNoIC9lbnRyeXBvaW50LnNoClJVTiBjaG1vZCAreCAvZW50cnlwb2ludC5zaApFWFBPU0UgODA4MApFTlRSWVBPSU5UIFsiL2VudHJ5cG9pbnQuc2giXQo=
+FROM ghcr.io/xtls/xray-core:latest AS xray
+FROM alpine:3.21
+RUN apk add --no-cache ca-certificates
+COPY --from=xray /usr/local/bin/xray /usr/local/bin/xray
+COPY config.json.template /etc/xray/config.json.template
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+EXPOSE 8080
+ENTRYPOINT ["/entrypoint.sh"]
